@@ -1,0 +1,20 @@
+<%- include('../partials/head') %>
+<div class="container">
+  <%array.forEach(entry=>{ %>
+    <div class="card">
+        <div class="card-content">
+          <span class="lighten-1"><h3><%= entry.airline %></h3></span>
+          <span class="card-title"><h2><%= entry.airport %></h2></span>
+          <ul>
+            <li>Flight No:<%= entry.flightNo%></li>
+            <li>Departs: <%= new Date(entry.departs).toDateString()%></li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a class="btn" href="/flights/<%= entry._id %>">Show</a>
+        </div>
+      </div>
+    
+    <% }) %>
+</div>
+<%- include('../partials/foot') %>

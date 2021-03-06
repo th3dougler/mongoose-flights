@@ -1,0 +1,45 @@
+<%- include('../partials/head') %>
+<div class="container">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">New Flight</span>
+
+      <form action="/flights" method="POST">
+        <div class="input-field col s12">
+          <select name="airline">
+            <option value="" disabled selected>Airline</option>
+            <option value="American">American</option>
+            <option value="Southwest">Southwest</option>
+            <option value="United">United</option>
+          </select>
+        </div>
+        <div class="input-field col s12">
+          <select name="airport">
+            <option value="DEN" selected>DEN</option>
+            <option value="AUS">AUS</option>
+            <option value="DFW">DFW</option>
+            <option value="LAX">LAX</option>
+            <option value="SAN">SAN</option>
+          </select>
+        </div>
+        <span>Flight No: </span> <input type="text" placeholder="10-9999" name="flightNo" required pattern="^([1-9][0-9]|[0-9][1-9][0-9]|[0-9][0-9][1-9][0-9])$"/>
+        <span>Departs:</span> <input type="text" class="datepicker" value="<%= date %> " disabled/>
+        </br>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems);
+  });
+</script>
+
+<%- include('../partials/foot') %>
