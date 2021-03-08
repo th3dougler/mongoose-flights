@@ -23,23 +23,37 @@
           </select>
         </div>
         <span>Flight No: </span> <input type="text" placeholder="10-9999" name="flightNo" required pattern="^([1-9][0-9]|[0-9][1-9][0-9]|[0-9][0-9][1-9][0-9])$"/>
+        <div class="row">
+          <div>Destinations: </div>
+          <blockquote id="current-destination"></blockquote>
+          <span name="destinations" id="hidden-array" style="display: none"></span>
+        <div class="input-field col s5 valign-wrapper">
+          
+          <select id="airport-destination" class="inline">
+            <option value="" disabled selected>Airport</option>
+            <option value="DEN">DEN</option>
+            <option value="AUS">AUS</option>
+            <option value="DFW">DFW</option>
+            <option value="LAX">LAX</option>
+            <option value="SAN">SAN</option>
+          </select>
+          
+        </div>
+        <div class="input-field col s5 valign-wrapper">
+          <input type="text" id="date-destination" class="inline datepicker" value="<%= date %> ">
+          <label>Date</label>
+        </div>
+        <div class="input-field  col s2 valign-wrapper">
+          <a href="#" id="add-destination" class="btn">Add</a>
+        </div>
+      </div>
         <span>Departs:</span> <input type="text" class="datepicker" value="<%= date %> " disabled/>
+        
         </br>
         <button class="btn" type="submit">Submit</button>
       </form>
     </div>
   </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-  });
-  
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems);
-  });
-</script>
-
+<script src="/javascripts/new.js"></script>
 <%- include('../partials/foot') %>
