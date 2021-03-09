@@ -9,7 +9,8 @@
         <span class="card-title"><h2><%= entry.airport %></h2></span>
         <ul>
           <li>Flight No:<%= entry.flightNo%></li>
-          <li>Departs: <%= new Date(entry.departs).toDateString()%></li>
+           <% let colour =  (entry.departs.getFullYear() < new Date().getFullYear())?  "red" : "black" %> 
+          <li style="color: <%= colour %> " >Departs: <%= new Date(entry.departs).toDateString()%></li>
         </ul>
       </div>
       <div class="card-action">

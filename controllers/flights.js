@@ -1,11 +1,14 @@
-const { Schema } = require("mongoose");
 const Flight = require("../models/flight");
+const Ticket = require("../models/ticket")
+
+Date.prototype.getDateForHTML = function(addYear){
+  return `${this.getUTCFullYear()+addYear}/${(this.getUTCMonth()+1).toString().padStart(2,'0')}/${this.getUTCDate().toString().padStart(2,'0')}`
+}
 
 module.exports = {
   index,
   new: newEntry,
   show,
-  edit,
   update,
   create,
   delete: deleteEntry,
@@ -27,17 +30,17 @@ async function index(req, res, next) {
 
 function newEntry(req, res, next) {
   let date = new Date();
-  date = `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
   res.render("flights/new", {
     title: "NEW FLIGHT",
     active: "new",
-    date: date,
+    date: date.getDateForHTML(10),
   });
 }
 
+
 async function show(req, res, next) {
   try {
-    let result = await Flight.findById(req.params.id)
+    let result = await (await Flight.findById(req.params.id)).populate('tickets').execPopulate();
     let tmpObj = result.toObject();
     tmpObj.destinations.sort(function(first,second){
       if(first.arrival < second.arrival) return -1;
@@ -54,7 +57,7 @@ async function show(req, res, next) {
     res.redirect("/flights");
   }
 }
-async function edit(req, res, next) {
+/* async function edit(req, res, next) {
   try {
     let result = await Flight.findById(req.params.id);
     let resultObject = result.toObject();
@@ -70,22 +73,8 @@ async function edit(req, res, next) {
     console.log(err);
     res.status(400);
   }
-}
-//obviously this returns the date to acceptable HTML format
-function convertDateyyyyMMdd(d) {
-  date = new Date(d);
-  year = date.getFullYear();
-  month = date.getMonth() + 1;
-  dt = date.getDate() + 1;
+} */
 
-  if (dt < 10) {
-    dt = "0" + dt;
-  }
-  if (month < 10) {
-    month = "0" + month;
-  }
-  return year + "-" + month + "-" + dt;
-}
 
 async function update(req, res, next) {
   //convert checkbox input from  "ON"/"" to boolean true/false

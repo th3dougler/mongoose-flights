@@ -42,12 +42,40 @@
   </div>
   <div class="card-action">
     
-    <form action="/flights/<%= entry._id %>?_method=DELETE" method="POST">
-      <a class="btn" href="/my_db/<%= entry._id %>/edit" disabled>Edit</a>
-    
+    <form action="/flights/<%= entry._id %>?_method=DELETE" method="POST">   
       <button class="btn" href="/flights/<%= entry._id %>">Delete</button>
     </form>
   </div>
+</div>
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">Tickets</span>
+    <blockquote>
+    <% entry.tickets.forEach(ticket=>{ %> 
+      Seat: <%= ticket.seat %><br/>
+      $ <%= ticket.price %> </br/>
+      <br/>
+    <% }) %> 
+  </blockquote>
+    <span class="card-title">Add Ticket</span>
+    <form action="/flights/<%= entry._id %>/tickets" method="POST">
+      <div class="row">
+        <div class="input-field col s5 center">
+          <input name="seat" id="seat" type="text" value="A10" class="validate" required pattern="[A-F][1-9]\d?">
+          <label for="seat">Seat (A-F)(1-999)</label>
+        </div>
+        <div class="input-field col s5 center">
+          <input name="price" id="price" type="number" value="0" class="validate" required min="0">
+          <label for="price">Price</label>
+        </div>
+        <div class="input-field col s2 center">
+          <button class="btn" type="submit">+</button>
+        </div>
+      </div>
+      
+      
+    </form>
+    </div>
 </div>
 </div>
 <%- include('../partials/foot') %>

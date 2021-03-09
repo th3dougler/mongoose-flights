@@ -11,7 +11,7 @@ router.get('/new', flightsCtrl.new);
 router.get('/:id', flightsCtrl.show);
 router.put('/:id', flightsCtrl.update);
 
-router.get('/:id/edit', flightsCtrl.edit);
+//router.get('/:id/edit', flightsCtrl.edit);
 
 
 router.delete('/:id', flightsCtrl.delete);
