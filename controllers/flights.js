@@ -37,10 +37,16 @@ function newEntry(req, res, next) {
 
 async function show(req, res, next) {
   try {
-    let result = await Flight.findById(req.params.id);
+    let result = await Flight.findById(req.params.id)
+    let tmpObj = result.toObject();
+    tmpObj.destinations.sort(function(first,second){
+      if(first.arrival < second.arrival) return -1;
+      else if (first.arrival > second.arrival) return 1;
+      else return 0;
+    })
     res.render("flights/show", {
       title: "SHOW FLIGHT ",
-      entry: result,
+      entry: tmpObj,
       active: req.params.id,
     });
   } catch (err) {
@@ -99,11 +105,7 @@ async function update(req, res, next) {
 
 async function create(req, res, next) {
   try {
-    let doc = new Flight({
-      airline: req.body.airline,
-      airport: req.body.airport,
-      flightNo: req.body.flightNo
-    })
+    let doc = new Flight(req.body);
     await doc.save();
     res.redirect("/flights");
   } catch (err) {

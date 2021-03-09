@@ -8,7 +8,13 @@
       <li>Flight No:<%= entry.flightNo%></li>
       <li>Departs: <%= new Date(entry.departs).toDateString()%></li>
       <li>Destinations:
-        <blockquote> <%=console.log(entry.destinations) %></blockquote>
+        <blockquote> <% entry.destinations.forEach(dest=>{ %>
+        <p>
+          <form action="/flights/<%= entry._id%>/destinations/<%=dest._id%>?_method=DELETE" method="POST">
+          <button type="submit">X</button> <strong><%= dest.airport %></strong> - (<%= dest.arrival %>)</form>
+          
+        </p>  
+        <% }) %></blockquote>
         <div class="row">
           <form action="/flights/<%= entry._id %>/destinations"  method="POST">
           <div class="input-field col s6">

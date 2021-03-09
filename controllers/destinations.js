@@ -1,20 +1,34 @@
 const Flight = require("../models/flight");
-
+const { Schema } = require("mongoose");
 module.exports = {
   create,
+  delete: deleteDestination,
 };
 
-async function create(req, res) {
-  console.log(req.body, req.params);
-  try {
-    await Flight.findOneAndUpdate(
-      { _id: req.params.id },
-      { destinations: req.params },
-      { new: true }
-    );
-    res.redirect(`/flights/${req.params.id}`);
-  } catch (err) {
-    console.log(err);
-    res.redirect(`/flights/`);
+function create(req, res) {
+  Flight.findOne({ _id: req.params.id }, function (err, result) {
+    if(err){
+      return res.send("u made a mistake",err);
+    }
+    console.log(result);
+    result.destinations.push(req.body);
+    result.save(function (err) {
+      res.redirect(`/flights/${req.params.id}`);
+    });
+  });
+}
+
+async function deleteDestination(req, res){
+  try{
+   let result = await Flight.findById(req.params.id);
+   await result.destinations.id(req.params.did).remove() 
+   await result.save();
+   res.redirect(`/flights/${req.params.id}`);
+  }
+  catch(err){
+    res.render('error',{
+      message: "destination - delete",
+      error: err
+    })
   }
 }
