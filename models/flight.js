@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const destinationSchema = new Schema({
   airport: {
     type: String,
@@ -30,12 +31,11 @@ const flightSchema = new Schema({
       let now = new Date();
       return new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
     },
-    destinations: {
-      type: [destinationSchema],
-    }
+    destinations: [destinationSchema]
   },
 },{
   timestamp: true,
 });
 
-module.exports = mongoose.model("Flight", flightSchema);
+module.exports = mongoose.model("Flight", flightSchema)
+

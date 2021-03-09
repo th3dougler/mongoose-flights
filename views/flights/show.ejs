@@ -7,7 +7,31 @@
     <ul>
       <li>Flight No:<%= entry.flightNo%></li>
       <li>Departs: <%= new Date(entry.departs).toDateString()%></li>
-      <li>Destinations: <%= entry.destinations %> </li>
+      <li>Destinations:
+        <blockquote> <%=console.log(entry.destinations) %></blockquote>
+        <div class="row">
+          <form action="/flights/<%= entry._id %>/destinations"  method="POST">
+          <div class="input-field col s6">
+            <select name="airport">
+              <option value="" disabled selected>Select an Airport</option>
+              <option value="AUS">AUS</option>
+              <option value="DFW">DFW</option>
+              <option value="DEN">DEN</option>
+              <option value="LAX">LAX</option>
+              <option value="SAN">SAN</option>
+            </select>
+            <label>Airport</label>
+          </div>
+          <div class="input-field col s4">
+            <input name="arrival" type="text" class="datepicker">
+            <label for="last_name">Date</label>
+          </div>
+          <div class="input-field col s2">
+            <button class="btn" type="submit">Add</button>
+          </div>
+        </form>
+        </div>
+      </li>
     </ul>
   </div>
   <div class="card-action">

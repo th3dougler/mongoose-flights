@@ -1,3 +1,4 @@
+const { Schema } = require("mongoose");
 const Flight = require("../models/flight");
 
 module.exports = {
@@ -11,24 +12,23 @@ module.exports = {
 };
 
 async function index(req, res, next) {
-  await Flight.find({}, function (err, result) {
-    if (err) {
-      console.log(err);
-      res.status(400);
-    } else {
-      res.render("flights/index", {
-        title: "ALL FLIGHTS ",
-        active: "index",
-        array: result,
-      });
-    }
-  });
+  try {
+    let result = await Flight.find({});
+    res.render("flights/index", {
+      title: "ALL FLIGHTS ",
+      active: "index",
+      array: result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("/flights");
+  }
 }
 
 function newEntry(req, res, next) {
   let date = new Date();
-  date = `${date.getFullYear() + 1}-${date.getMonth()+1}-${date.getDate()}`
-  res.render("flights/new", { 
+  date = `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
+  res.render("flights/new", {
     title: "NEW FLIGHT",
     active: "new",
     date: date,
@@ -36,38 +36,34 @@ function newEntry(req, res, next) {
 }
 
 async function show(req, res, next) {
-  await Flight.findById(req.params.id, function (err, result) {
-    if (err) {
-      console.log(err);
-      res.status(400);
-    } else {
-      res.render("flights/show", {
-        title: "SHOW FLIGHT ",
-        entry: result,
-        active: req.params.id,
-      });
-    }
-  });
+  try {
+    let result = await Flight.findById(req.params.id);
+    res.render("flights/show", {
+      title: "SHOW FLIGHT ",
+      entry: result,
+      active: req.params.id,
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("/flights");
+  }
 }
 async function edit(req, res, next) {
-  await Flight.findById(req.params.id, function (err, result) {
-    if (err) {
-      console.log(err);
-      res.status(400);
-    } else {
-      let resultObject = result.toObject();
-
-      resultObject.date_input = convertDateyyyyMMdd(resultObject.date_input);
-      resultObject.array_input = resultObject.array_input.reduce(
-        (acc, cur) => acc + "\n" + cur
-      );
-
-      res.render(`my_db/edit`, {
-        title: "MyDB - Edit ",
-        entry: resultObject,
-      });
-    }
-  });
+  try {
+    let result = await Flight.findById(req.params.id);
+    let resultObject = result.toObject();
+    resultObject.date_input = convertDateyyyyMMdd(resultObject.date_input);
+    resultObject.array_input = resultObject.array_input.reduce(
+      (acc, cur) => acc + "\n" + cur
+    );
+    res.render(`my_db/edit`, {
+      title: "MyDB - Edit ",
+      entry: resultObject,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+  }
 }
 //obviously this returns the date to acceptable HTML format
 function convertDateyyyyMMdd(d) {
@@ -96,27 +92,25 @@ async function update(req, res, next) {
     // const newEntry = await new Flight(req.body);
     await Flight.findByIdAndUpdate(req.params.id, req.body);
     res.redirect(`/my_db/${req.params.id}`);
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
   }
 }
 
 async function create(req, res, next) {
-  console.log(req.body)
-
-  
-
-  const newEntry = new Flight(req.body);
-  await newEntry.save(function (err, success) {
-    if (err) {
-      console.log("Error: ", err);
-      res.status(400);
-    } else {
-      res.redirect("/flights");
-    }
-  });
+  try {
+    let doc = new Flight({
+      airline: req.body.airline,
+      airport: req.body.airport,
+      flightNo: req.body.flightNo
+    })
+    await doc.save();
+    res.redirect("/flights");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/flights");
+  }
 }
-
 
 function deleteEntry(req, res, next) {
   Flight.findByIdAndRemove(req.params.id, function (err, docs) {
