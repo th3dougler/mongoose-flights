@@ -11,7 +11,6 @@ function create(req, res) {
       if (err) {
         return res.send("u made a mistake", err);
       }
-      console.log(result);
       result.destinations.push(req.body);
       result.save(function (err) {
         res.redirect(`/flights/${req.params.id}`);

@@ -2,19 +2,22 @@
 <div class="container">
   <div class="row">
     <%array.forEach(entry=>{ %>
-      <div class="col s12 m4 l3">
+      <div class="col s12 m4 l3 ">
     <div class="card center medium">
       <div class="card-content">
         <span class="lighten-1"><h3><%= entry.airline %></h3></span>
         <span class="card-title"><h2><%= entry.airport %></h2></span>
         <ul>
           <li>Flight No:<%= entry.flightNo%></li>
-           <% let colour =  (entry.departs.getFullYear() < new Date().getFullYear())?  "red" : "black" %> 
-          <li style="color: <%= colour %> " >Departs: <%= new Date(entry.departs).toDateString()%></li>
+           <% let isRed =  (entry.departs.getFullYear() < new Date().getFullYear())?  "red" : "" %> 
+          <li class="<%= isRed %> " >Departs: <%= new Date(entry.departs).toDateString()%></li>
         </ul>
       </div>
       <div class="card-action">
-        <a class="btn" href="/flights/<%= entry._id %>">Detail</a>
+        <a class="btn left" href="/flights/<%= entry._id %>">Details</a>
+        <form action="/flights/<%= entry._id %>?_method=DELETE" method="POST">
+        <button type="submit" class="btn-floating  halfway-fab white-text waves-effect waves-light red">X</button>
+      </form>
       </div>
     </div>
   </div>

@@ -8,17 +8,17 @@
       <li>Flight No:<%= entry.flightNo%></li>
       <li>Departs: <%= new Date(entry.departs).toDateString()%></li>
       <li>Destinations:
-        <blockquote> <% entry.destinations.forEach(dest=>{ %>
-        <p>
+        <div class="card-content"><% entry.destinations.forEach(dest=>{ %>
+        <div class="row">
           <form action="/flights/<%= entry._id%>/destinations/<%=dest._id%>?_method=DELETE" method="POST">
-          <button type="submit">X</button> <strong><%= dest.airport %></strong> - (<%= dest.arrival %>)</form>
+          <button class="btn-floating red white-text waves-effect waves-light" type="submit">X</button> <strong><%= dest.airport %></strong> - (<%= dest.arrival %>)</form>
           
-        </p>  
-        <% }) %></blockquote>
+          </div>  
+        <% }) %></div>
         <div class="row">
           <form action="/flights/<%= entry._id %>/destinations"  method="POST">
           <div class="input-field col s6">
-            <select name="airport">
+            <select name="airport" required>
               <option value="" disabled selected>Select an Airport</option>
               <option value="AUS">AUS</option>
               <option value="DFW">DFW</option>
@@ -29,34 +29,38 @@
             <label>Airport</label>
           </div>
           <div class="input-field col s4">
-            <input name="arrival" type="text" class="datepicker">
+            <input name="arrival" type="text" class="datepicker" required>
             <label for="last_name">Date</label>
           </div>
           <div class="input-field col s2">
-            <button class="btn" type="submit">Add</button>
+            <button class="btn-floating btn-large waves-effect waves-light green left" type="submit">ADD</button>
           </div>
         </form>
         </div>
       </li>
     </ul>
   </div>
-  <div class="card-action">
+  <div class="card-content">
     
     <form action="/flights/<%= entry._id %>?_method=DELETE" method="POST">   
-      <button class="btn" href="/flights/<%= entry._id %>">Delete</button>
+      <button class="btn-floating btn-large red right white-text waves-effect waves-light" href="/flights/<%= entry._id %>">Delete</button>
     </form>
   </div>
 </div>
 <div class="card">
   <div class="card-content">
     <span class="card-title">Tickets</span>
-    <blockquote>
+    <div class="card-content">
     <% entry.tickets.forEach(ticket=>{ %> 
-      Seat: <%= ticket.seat %><br/>
-      $ <%= ticket.price %> </br/>
-      <br/>
+      <div class="row">
+      <form action="/flights/<%= entry._id %>/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
+      <button class="left btn-floating red white-text waves-effect waves-light" type="submit">X</button>
+      <strong>&nbsp; Seat: <%= ticket.seat %></strong><br />&nbsp; $ <%= ticket.price %>
+    </form>
+
+    </div>
     <% }) %> 
-  </blockquote>
+  </div>
     <span class="card-title">Add Ticket</span>
     <form action="/flights/<%= entry._id %>/tickets" method="POST">
       <div class="row">
@@ -68,8 +72,8 @@
           <input name="price" id="price" type="number" value="0" class="validate" required min="0">
           <label for="price">Price</label>
         </div>
-        <div class="input-field col s2 center">
-          <button class="btn" type="submit">+</button>
+        <div class="input-field col s2 left">
+          <button class="btn-floating btn-large green waves-effect waves-light" type="submit">ADD</button>
         </div>
       </div>
       

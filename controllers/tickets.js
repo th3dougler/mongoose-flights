@@ -29,5 +29,21 @@ async function create(req, res) {
 }
 
 async function deleteTicket(req, res) {
-  res.send("DELETE");
+  try{
+    console.log(req.body, req.params);
+    
+    let thisFlight = await Flight.findById(req.params.id);
+
+    let thisTicket = Ticket.findById(req.params.tid);
+    thisTicket.remove().exec();
+    
+    await thisFlight.save();
+    res.redirect(`/flights/${req.params.id}`);
+  }catch(err){
+    res.render('error',{
+      message: "ticketsCtrl - delete",
+      error: err,
+    })
+    
+  }
 }
