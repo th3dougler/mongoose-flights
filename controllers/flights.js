@@ -57,23 +57,6 @@ async function show(req, res, next) {
     res.redirect("/flights");
   }
 }
-/* async function edit(req, res, next) {
-  try {
-    let result = await Flight.findById(req.params.id);
-    let resultObject = result.toObject();
-    resultObject.date_input = convertDateyyyyMMdd(resultObject.date_input);
-    resultObject.array_input = resultObject.array_input.reduce(
-      (acc, cur) => acc + "\n" + cur
-    );
-    res.render(`my_db/edit`, {
-      title: "MyDB - Edit ",
-      entry: resultObject,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(400);
-  }
-} */
 
 
 async function update(req, res, next) {
